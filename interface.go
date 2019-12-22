@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"image"
 
-	"git.kirsle.net/apps/doodle/lib/render/event"
+	"git.kirsle.net/go/render/event"
 )
 
 // Engine is the interface for the rendering engine, keeping SDL-specific stuff

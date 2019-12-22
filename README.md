@@ -1,7 +1,144 @@
 # Render: Go Graphics Library
 
-Render is a graphics library written in Go which targets desktop applications on
-Windows, MacOS and Linux as well as WebAssembly to run in the browser.
+Render is a graphics rendering library for Go.
 
-For desktop systems it uses SDL2 under the hood, and in WebAssembly it interacts
-with an HTML Canvas element for drawing.
+It supports SDL2 and HTML Canvas back-ends enabling its use for both desktop
+applications (Linux, Mac and Windows) and WebAssembly modules for running in
+the web browser.
+
+![Screenshot](examples/hello-world/screenshot.png)
+
+## Example
+
+```go
+package main
+
+import (
+    "git.kirsle.net/go/render"
+    "git.kirsle.net/go/render/sdl"
+)
+
+func main() {
+    mw := sdl.New("Hello World", 320, 240)
+
+    if err := mw.Setup(); err != nil {
+        panic(err)
+    }
+
+    // Text that we're gonna draw in the window.
+    text := render.Text{
+        Text:         "Hello, world!",
+        Size:         24,
+        Color:        render.SkyBlue,
+        Shadow:       render.Blue,
+        FontFilename: "DejaVuSans.ttf",
+    }
+
+    // Compute the rendered size of the text.
+    rect, _ := mw.ComputeTextRect(text)
+
+    for {
+        // Blank the window.
+        mw.Clear(render.White)
+
+        // Poll for events (mouse clicks, keyboard keys, etc.)
+        ev, err := mw.Poll()
+        if err != nil {
+            panic(err)
+        }
+
+        // Escape key closes the window.
+        if ev.Escape {
+            mw.Teardown()
+            break
+        }
+
+        // Get the window size.
+        w, h := mw.WindowSize()
+
+        // Draw the text centered in the window.
+        mw.DrawText(text, render.NewPoint(
+            (int32(w)/2)-(rect.W/2),
+            (int32(h)/2)-(rect.H/2),
+        ))
+
+        mw.Present()
+    }
+}
+```
+
+See the `examples/` directory for examples. More will come eventually,
+including some WebAssembly examples.
+
+## Project Status: Alpha
+
+This module was written as part of my drawing-based maze game, code named
+[Project: Doodle](https://www.kirsle.net/doodle). It is currently in
+**alpha status** and its API may change and be cleaned up in the future.
+
+There are a few API cleanup tasks on my to-do list for this project, but they
+will come later when I have a chance to update the Project: Doodle game
+accordingly:
+
+* I want to replace all `int32` types with normal `int` -- int32 was used
+  initially due to SDL2 but for the Go API I want to abstract this away.
+
+## Drawing Methods (Engine)
+
+This package provides some _basic_ primitive drawing methods which are
+implemented for SDL2 (desktops) and HTML Canvas (WebAssembly). See the
+render.Engine interface. The drawing methods supported are:
+
+* Clear(Color): blank the window and fill it with this color.
+* DrawPoint(Color, Point): draw a single pixel at a coordinate.
+* DrawLine(Color, A Point, B Point): draw a line between two points.
+* DrawRect(Color, Rect): draw a rectangle outline between two points.
+* DrawBox(Color, Rect): draw a filled rectangle between two points.
+* DrawText(Text, Point): draw text at a location.
+* StoreTexture(name string, image.Image): load a Go image.Image object into
+  the engine as a "texture" that can be re-used and pasted on the canvas.
+* LoadTexture(filename string): load an image from disk into a texture.
+* Copy(Texturer, src Rect, dst Rect): copy a texture onto the canvas.
+
+## Drawing Types
+
+This package defines a handful of types useful for drawing operations.
+See the godoc for full details.
+
+**Note:** all int32 values are to become normal ints at some point in the
+future, pending refactor in my Project: Doodle game.
+
+* Color: an RGBA color holding uint8 values for each channel.
+  * NewRGBA(red, green, blue, alpha uint8) to construct a new color.
+* Point: holds an X,Y pair of coordinates (int32, to become int at some point)
+* Rect: holds an X,Y and a W,H value (int32).
+* Text: holds text and configuration for rendering (color, stroke, shadow,
+  size, etc.)
+
+## Shape Generator Functions
+
+The render package includes a few convenience functions for drawing
+complex shapes.
+
+The generator functions return a channel that yields all of the Points
+that should be drawn to complete the shape. Example:
+
+```go
+var (
+    A Point = render.NewPoint(10, 10)
+    B Point = render.NewPoint(15, 20)
+)
+
+for pt := range render.IterLine(A, B) {
+    engine.DrawPoint(render.Red, pt)
+}
+```
+
+* IterLine(A Point, B Point): draw a line from A to B.
+* IterRect(A Point, B Point): iterate all the points to draw a rectangle.
+* IterEllipse(A Point, B Point): draw an elipse fitting inside the
+  rectangle bounded by points A and B.
+
+## License
+
+MIT.

@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 
-	"git.kirsle.net/apps/doodle/lib/render/event"
+	"git.kirsle.net/go/render/event"
 	"github.com/veandco/go-sdl2/sdl"
 )
 
