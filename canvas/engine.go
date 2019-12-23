@@ -4,7 +4,7 @@ import (
 	"syscall/js"
 	"time"
 
-	"git.kirsle.net/apps/doodle/lib/render/event"
+	"git.kirsle.net/go/render/event"
 )
 
 // Engine implements a rendering engine targeting an HTML canvas for

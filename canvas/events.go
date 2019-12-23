@@ -3,7 +3,7 @@ package canvas
 import (
 	"syscall/js"
 
-	"git.kirsle.net/apps/doodle/lib/render/event"
+	"git.kirsle.net/go/render/event"
 )
 
 // EventClass to categorize JavaScript events.

@@ -8,7 +8,7 @@ import (
 	"image/png"
 	"syscall/js"
 
-	"git.kirsle.net/apps/doodle/lib/render"
+	"git.kirsle.net/go/render"
 )
 
 // Texture can hold on to cached image textures.

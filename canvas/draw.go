@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"syscall/js"
 
-	"git.kirsle.net/apps/doodle/lib/render"
+	"git.kirsle.net/go/render"
 )
 
 // Methods here implement the drawing functions of the render.Engine
