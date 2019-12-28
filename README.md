@@ -1,5 +1,7 @@
 # Render: Go Graphics Library
 
+[![GoDoc](https://godoc.org/git.kirsle.net/go/render?status.svg)](https://godoc.org/git.kirsle.net/go/render)
+
 Render is a graphics rendering library for Go.
 
 It supports SDL2 and HTML Canvas back-ends enabling its use for both desktop
