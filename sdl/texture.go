@@ -72,7 +72,7 @@ func (r *Renderer) StoreTexture(name string, img image.Image) (render.Texturer, 
 
 // Size returns the dimensions of the texture.
 func (t *Texture) Size() render.Rect {
-	return render.NewRect(t.width, t.height)
+	return render.NewRect(int(t.width), int(t.height))
 }
 
 // LoadTexture initializes a texture from a bitmap image.

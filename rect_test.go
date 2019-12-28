@@ -10,10 +10,10 @@ import (
 func TestIntersection(t *testing.T) {
 	newRect := func(x, y, w, h int) render.Rect {
 		return render.Rect{
-			X: int32(x),
-			Y: int32(y),
-			W: int32(w),
-			H: int32(h),
+			X: x,
+			Y: y,
+			W: w,
+			H: h,
 		}
 	}
 
@@ -62,7 +62,7 @@ func TestIntersection(t *testing.T) {
 		{
 			A:      newRect(0, 30, 11, 62),
 			B:      newRect(7, 4, 17, 28),
-			Expect: false,
+			Expect: true,
 		},
 	}
 

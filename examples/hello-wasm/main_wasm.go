@@ -21,13 +21,13 @@ var (
 	// Gopher sprite variables
 	gopher   render.Texturer
 	texSize  render.Rect
-	speed    int32 = 4
-	position       = render.NewPoint(0, 0)
-	velocity       = render.NewPoint(speed, speed)
+	speed    = 4
+	position = render.NewPoint(0, 0)
+	velocity = render.NewPoint(speed, speed)
 
 	// Decorative border variables
-	borderColor       = render.Red
-	borderSize  int32 = 12
+	borderColor = render.Red
+	borderSize  = 12
 
 	// Background color of the window.
 	bgColor = render.RGBA(255, 255, 128, 255)
@@ -97,13 +97,13 @@ func update(e render.Engine) {
 	// Bounce off the walls.
 	w, h := e.WindowSize()
 
-	if velocity.X > 0 && position.X+texSize.W >= int32(w)-borderSize {
+	if velocity.X > 0 && position.X+texSize.W >= w-borderSize {
 		velocity.X *= -1
 	} else if velocity.X < 0 && position.X <= borderSize {
 		velocity.X *= -1
 	}
 
-	if velocity.Y > 0 && position.Y+texSize.H >= int32(h)-borderSize {
+	if velocity.Y > 0 && position.Y+texSize.H >= h-borderSize {
 		velocity.Y *= -1
 	} else if velocity.Y < 0 && position.Y <= borderSize {
 		velocity.Y *= -1
@@ -125,7 +125,7 @@ func draw(e render.Engine) {
 	}
 	rect, _ := e.ComputeTextRect(text)
 	e.DrawText(text, render.NewPoint(
-		(int32(w)/2)-(rect.W/2),
+		(w/2)-(rect.W/2),
 		25,
 	))
 
@@ -144,34 +144,34 @@ func drawBorder(e render.Engine, w, h int) {
 	e.DrawBox(borderColor.Lighten(40), render.Rect{
 		X: 0,
 		Y: 0,
-		W: int32(w),
-		H: int32(h),
+		W: w,
+		H: h,
 	})
 	e.DrawBox(borderColor.Darken(40), render.Rect{
 		X: borderSize / 2,
 		Y: borderSize / 2,
-		W: int32(w) - (borderSize / 2),
-		H: int32(h) - (borderSize / 2),
+		W: w - (borderSize / 2),
+		H: h - (borderSize / 2),
 	})
 
 	// Now inset a bit and draw the light/dark edges of the bottom/right.
 	e.DrawBox(borderColor.Darken(40), render.Rect{
 		X: borderSize,
 		Y: borderSize,
-		W: int32(w),
-		H: int32(h),
+		W: w,
+		H: h,
 	})
 	e.DrawBox(borderColor.Lighten(40), render.Rect{
 		X: borderSize,
 		Y: borderSize,
-		W: int32(w) - borderSize - (borderSize / 2),
-		H: int32(h) - borderSize - (borderSize / 2),
+		W: w - borderSize - (borderSize / 2),
+		H: h - borderSize - (borderSize / 2),
 	})
 
 	e.DrawBox(bgColor, render.Rect{
 		X: borderSize,
 		Y: borderSize,
-		W: int32(w) - (borderSize * 2),
-		H: int32(h) - (borderSize * 2),
+		W: w - (borderSize * 2),
+		H: h - (borderSize * 2),
 	})
 }

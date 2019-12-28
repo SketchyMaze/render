@@ -33,7 +33,7 @@ func ParseResolution(resi string) (int, int, error) {
 
 // TrimBox helps with Engine.Copy() to trim a destination box so that it
 // won't overflow with the parent container.
-func TrimBox(src, dst *Rect, p Point, S Rect, thickness int32) {
+func TrimBox(src, dst *Rect, p Point, S Rect, thickness int) {
 	// Constrain source width to not bigger than Canvas width.
 	if src.W > S.W {
 		src.W = S.W
@@ -97,6 +97,14 @@ func TrimBox(src, dst *Rect, p Point, S Rect, thickness int32) {
 	if dst.W >= S.W-thickness {
 		dst.W = S.W - thickness
 	}
+}
+
+// AbsInt returns the absolute value of an integer.
+func AbsInt(v int) int {
+	if v < 0 {
+		return -v
+	}
+	return v
 }
 
 // AbsInt32 returns the absolute value of an int32.

@@ -53,15 +53,15 @@ type Texturer interface {
 
 // Rect has a coordinate and a width and height.
 type Rect struct {
-	X int32
-	Y int32
-	W int32
-	H int32
+	X int
+	Y int
+	W int
+	H int
 }
 
 // NewRect creates a rectangle of size `width` and `height`. The X,Y values
 // are initialized to zero.
-func NewRect(width, height int32) Rect {
+func NewRect(width, height int) Rect {
 	return Rect{
 		W: width,
 		H: height,
@@ -155,9 +155,9 @@ type Text struct {
 	Text         string
 	Size         int
 	Color        Color
-	Padding      int32
-	PadX         int32
-	PadY         int32
+	Padding      int
+	PadX         int
+	PadY         int
 	Stroke       Color  // Stroke color (if not zero)
 	Shadow       Color  // Drop shadow color (if not zero)
 	FontFilename string // Path to *.ttf file on disk

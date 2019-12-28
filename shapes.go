@@ -32,10 +32,7 @@ func IterLine(p1 Point, p2 Point) chan Point {
 		x := float64(x1)
 		y := float64(y1)
 		for i := 0; i <= int(step); i++ {
-			generator <- Point{
-				X: int32(x),
-				Y: int32(y),
-			}
+			generator <- NewPoint(int(x), int(y))
 			x += dx
 			y += dy
 		}
@@ -95,10 +92,10 @@ func IterRect(p1, p2 Point) chan Point {
 // bottom-right corners of a rectangle that encompasses the ellipse.
 func IterEllipse(A, B Point) chan Point {
 	var (
-		width  = AbsInt32(B.X - A.X)
-		height = AbsInt32(B.Y - A.Y)
+		width  = AbsInt(B.X - A.X)
+		height = AbsInt(B.Y - A.Y)
 		radius = NewPoint(width/2, height/2)
-		center = NewPoint(AbsInt32(B.X-radius.X), AbsInt32(B.Y-radius.Y))
+		center = NewPoint(AbsInt(B.X-radius.X), AbsInt(B.Y-radius.Y))
 	)
 
 	return MidpointEllipse(center, radius)

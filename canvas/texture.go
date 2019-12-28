@@ -69,7 +69,7 @@ func (e *Engine) StoreTexture(name string, img image.Image) (render.Texturer, er
 
 // Size returns the dimensions of the texture.
 func (t *Texture) Size() render.Rect {
-	return render.NewRect(int32(t.width), int32(t.height))
+	return render.NewRect(t.width, t.height)
 }
 
 // LoadTexture recalls a cached texture image.

@@ -81,8 +81,8 @@ func (e *Engine) ComputeTextRect(text render.Text) (render.Rect, error) {
 	rect := render.Rect{
 		// TODO: the only TextMetrics widely supported in browsers is
 		// the width. For height, use the text size for now.
-		W: int32(measure.Get("width").Int()),
-		H: int32(text.Size),
+		W: measure.Get("width").Int(),
+		H: text.Size,
 	}
 	return rect, nil
 }

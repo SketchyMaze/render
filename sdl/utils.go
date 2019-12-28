@@ -18,9 +18,9 @@ func ColorToSDL(c render.Color) sdl.Color {
 // RectToSDL converts Doodle's Rect type to an sdl.Rect.
 func RectToSDL(r render.Rect) sdl.Rect {
 	return sdl.Rect{
-		X: r.X,
-		Y: r.Y,
-		W: r.W,
-		H: r.H,
+		X: int32(r.X),
+		Y: int32(r.Y),
+		W: int32(r.W),
+		H: int32(r.H),
 	}
 }

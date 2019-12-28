@@ -95,8 +95,8 @@ func (r *Renderer) ComputeTextRect(text render.Text) (render.Rect, error) {
 	}
 	defer surface.Free()
 
-	rect.W = surface.W
-	rect.H = surface.H
+	rect.W = int(surface.W)
+	rect.H = int(surface.H)
 	return rect, err
 }
 
@@ -125,8 +125,8 @@ func (r *Renderer) DrawText(text render.Text, point render.Point) error {
 		defer tex.Destroy()
 
 		tmp := &sdl.Rect{
-			X: point.X + dx,
-			Y: point.Y + dy,
+			X: int32(point.X) + dx,
+			Y: int32(point.Y) + dy,
 			W: surface.W,
 			H: surface.H,
 		}

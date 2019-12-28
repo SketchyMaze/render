@@ -8,8 +8,8 @@ import (
 
 // Point holds an X,Y coordinate value.
 type Point struct {
-	X int32
-	Y int32
+	X int
+	Y int
 }
 
 // Common points.
@@ -18,7 +18,7 @@ var (
 )
 
 // NewPoint makes a new Point at an X,Y coordinate.
-func NewPoint(x, y int32) Point {
+func NewPoint(x, y int) Point {
 	return Point{
 		X: x,
 		Y: y,
@@ -44,8 +44,8 @@ func ParsePoint(v string) (Point, error) {
 		)
 	}
 	return Point{
-		X: int32(x),
-		Y: int32(y),
+		X: int(x),
+		Y: int(y),
 	}, nil
 }
 
@@ -103,7 +103,7 @@ func (p *Point) UnmarshalText(b []byte) error {
 		)
 	}
 
-	p.X = int32(x)
-	p.Y = int32(y)
+	p.X = int(x)
+	p.Y = int(y)
 	return nil
 }

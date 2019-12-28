@@ -64,8 +64,8 @@ func main() {
 
         // Draw the text centered in the window.
         mw.DrawText(text, render.NewPoint(
-            (int32(w)/2)-(rect.W/2),
-            (int32(h)/2)-(rect.H/2),
+            (w/2) - (rect.W/2),
+            (h/2) - (rect.H/2),
         ))
 
         mw.Present()
@@ -81,13 +81,6 @@ including some WebAssembly examples.
 This module was written as part of my drawing-based maze game, code named
 [Project: Doodle](https://www.kirsle.net/doodle). It is currently in
 **alpha status** and its API may change and be cleaned up in the future.
-
-There are a few API cleanup tasks on my to-do list for this project, but they
-will come later when I have a chance to update the Project: Doodle game
-accordingly:
-
-* I want to replace all `int32` types with normal `int` -- int32 was used
-  initially due to SDL2 but for the Go API I want to abstract this away.
 
 ## Drawing Methods (Engine)
 
@@ -111,13 +104,10 @@ render.Engine interface. The drawing methods supported are:
 This package defines a handful of types useful for drawing operations.
 See the godoc for full details.
 
-**Note:** all int32 values are to become normal ints at some point in the
-future, pending refactor in my Project: Doodle game.
-
 * Color: an RGBA color holding uint8 values for each channel.
   * NewRGBA(red, green, blue, alpha uint8) to construct a new color.
-* Point: holds an X,Y pair of coordinates (int32, to become int at some point)
-* Rect: holds an X,Y and a W,H value (int32).
+* Point: holds an X,Y pair of coordinates.
+* Rect: holds an X,Y and a W,H value.
 * Text: holds text and configuration for rendering (color, stroke, shadow,
   size, etc.)
 

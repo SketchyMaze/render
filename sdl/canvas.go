@@ -19,7 +19,7 @@ func (r *Renderer) DrawPoint(color render.Color, point render.Point) {
 	if color != r.lastColor {
 		r.renderer.SetDrawColor(color.Red, color.Green, color.Blue, color.Alpha)
 	}
-	r.renderer.DrawPoint(point.X, point.Y)
+	r.renderer.DrawPoint(int32(point.X), int32(point.Y))
 }
 
 // DrawLine draws a line between two points.
@@ -27,7 +27,7 @@ func (r *Renderer) DrawLine(color render.Color, a, b render.Point) {
 	if color != r.lastColor {
 		r.renderer.SetDrawColor(color.Red, color.Green, color.Blue, color.Alpha)
 	}
-	r.renderer.DrawLine(a.X, a.Y, b.X, b.Y)
+	r.renderer.DrawLine(int32(a.X), int32(a.Y), int32(b.X), int32(b.Y))
 }
 
 // DrawRect draws a rectangle.
@@ -36,10 +36,10 @@ func (r *Renderer) DrawRect(color render.Color, rect render.Rect) {
 		r.renderer.SetDrawColor(color.Red, color.Green, color.Blue, color.Alpha)
 	}
 	r.renderer.DrawRect(&sdl.Rect{
-		X: rect.X,
-		Y: rect.Y,
-		W: rect.W,
-		H: rect.H,
+		X: int32(rect.X),
+		Y: int32(rect.Y),
+		W: int32(rect.W),
+		H: int32(rect.H),
 	})
 }
 
@@ -49,9 +49,9 @@ func (r *Renderer) DrawBox(color render.Color, rect render.Rect) {
 		r.renderer.SetDrawColor(color.Red, color.Green, color.Blue, color.Alpha)
 	}
 	r.renderer.FillRect(&sdl.Rect{
-		X: rect.X,
-		Y: rect.Y,
-		W: rect.W,
-		H: rect.H,
+		X: int32(rect.X),
+		Y: int32(rect.Y),
+		W: int32(rect.W),
+		H: int32(rect.H),
 	})
 }
