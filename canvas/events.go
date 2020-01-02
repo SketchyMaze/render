@@ -161,6 +161,9 @@ func (e *Engine) PollEvent() *Event {
 func (e *Engine) Poll() (*event.State, error) {
 	s := e.events
 
+	// Reset some event states.
+	s.WindowResized = false
+
 	for event := e.PollEvent(); event != nil; event = e.PollEvent() {
 		switch event.Class {
 		case WindowEvent:

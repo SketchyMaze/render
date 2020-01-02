@@ -12,13 +12,16 @@ import (
 var (
 	DebugWindowEvents = false
 	DebugMouseEvents  = false
-	DebugClickEvents  = true
+	DebugClickEvents  = false
 	DebugKeyEvents    = false
 )
 
 // Poll for events.
 func (r *Renderer) Poll() (*event.State, error) {
 	s := r.events
+
+	// Reset some events.
+	s.WindowResized = false
 
 	// helper function to push keyboard key names on keyDown events only.
 	pushKey := func(name string, state uint8) {
