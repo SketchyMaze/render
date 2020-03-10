@@ -53,6 +53,16 @@ func FromColor(from color.Color) Color {
 	)
 }
 
+// ToRGBA converts to a standard Go color.Color
+func (c Color) ToRGBA() color.RGBA {
+	return color.RGBA{
+		R: c.Red,
+		G: c.Green,
+		B: c.Blue,
+		A: c.Alpha,
+	}
+}
+
 // MustHexColor parses a color from hex code or panics.
 func MustHexColor(hex string) Color {
 	color, err := HexColor(hex)

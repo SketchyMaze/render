@@ -156,6 +156,7 @@ func (r *Renderer) Poll() (*event.State, error) {
 			case sdl.SCANCODE_DOWN:
 				s.Down = t.State == 1
 			case sdl.SCANCODE_LSHIFT:
+				fallthrough
 			case sdl.SCANCODE_RSHIFT:
 				s.Shift = t.State == 1
 			case sdl.SCANCODE_LALT:

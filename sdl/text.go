@@ -10,7 +10,7 @@ import (
 )
 
 // TODO: font filenames
-var defaultFontFilename = "DejaVuSans.ttf"
+var DefaultFontFilename = "DejaVuSans.ttf"
 
 // Font holds cached SDL_TTF structures for loaded fonts. They are created
 // automatically when fonts are either preinstalled (InstallFont) or loaded for
@@ -37,7 +37,7 @@ func InstallFont(filename string, binary []byte) {
 // LoadFont loads and caches the font at a given size.
 func LoadFont(filename string, size int) (*ttf.Font, error) {
 	if filename == "" {
-		filename = defaultFontFilename
+		filename = DefaultFontFilename
 	}
 
 	// Cached font available?

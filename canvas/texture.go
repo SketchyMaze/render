@@ -13,10 +13,11 @@ import (
 
 // Texture can hold on to cached image textures.
 type Texture struct {
-	data   string   // data:image/png URI
-	image  js.Value // DOM image element
-	canvas js.Value // Warmed up canvas element
-	ctx2d  js.Value // 2D drawing context for the canvas.
+	data   string      // data:image/png URI
+	img    image.Image // underlying Go image data
+	image  js.Value    // DOM image element
+	canvas js.Value    // Warmed up canvas element
+	ctx2d  js.Value    // 2D drawing context for the canvas.
 	width  int
 	height int
 }
@@ -39,6 +40,7 @@ func (e *Engine) StoreTexture(name string, img image.Image) (render.Texturer, er
 
 	tex := &Texture{
 		data:   dataURI,
+		img:    img,
 		width:  width,
 		height: height,
 	}
