@@ -81,6 +81,18 @@ func (p *Point) Subtract(other Point) {
 	p.Y -= other.Y
 }
 
+// Compare the point to another, returning a delta coordinate.
+//
+// If the two points are equal the result has X=0 Y=0. Otherwise the X and Y
+// return values will be positive or negative numbers of how you could modify
+// the current Point to be equal to the other.
+func (p *Point) Compare(other Point) Point {
+	return Point{
+		X: other.X - p.X,
+		Y: other.Y - p.Y,
+	}
+}
+
 // MarshalText to convert the point into text so that a render.Point may be used
 // as a map key and serialized to JSON.
 func (p *Point) MarshalText() ([]byte, error) {
