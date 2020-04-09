@@ -177,6 +177,7 @@ var (
 	Invisible  = Color{}
 	White      = RGBA(255, 255, 255, 255)
 	Grey       = RGBA(153, 153, 153, 255)
+	DarkGrey   = RGBA(64, 64, 64, 255)
 	Black      = RGBA(0, 0, 0, 255)
 	SkyBlue    = RGBA(0, 153, 255, 255)
 	Blue       = RGBA(0, 0, 255, 255)
