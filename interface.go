@@ -169,7 +169,7 @@ func (t Text) String() string {
 
 // IsZero returns if the Text is the zero value.
 func (t Text) IsZero() bool {
-	return t.Text == "" && t.Size == 0 && t.Color == Invisible && t.Padding == 0 && t.Stroke == Invisible && t.Shadow == Invisible
+	return t.Text == "" && t.Size == 0 && t.Color == Invisible && t.Padding == 0 && t.PadX == 0 && t.PadY == 0 && t.Stroke == Invisible && t.Shadow == Invisible
 }
 
 // Common color names.
