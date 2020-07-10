@@ -83,6 +83,10 @@ func HexColor(hex string) (Color, error) {
 	var m []string
 	if len(hex) == 3 {
 		m = reHexColor3.FindStringSubmatch(hex)
+		// Double up the hex characters.
+		m[1] += m[1]
+		m[2] += m[2]
+		m[3] += m[3]
 	} else if len(hex) == 6 {
 		m = reHexColor6.FindStringSubmatch(hex)
 	} else if len(hex) == 8 {

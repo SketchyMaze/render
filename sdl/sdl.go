@@ -103,6 +103,11 @@ func (r *Renderer) WindowSize() (int, int) {
 	return int(w), int(h)
 }
 
+// Maximize the window.
+func (r *Renderer) Maximize() {
+	r.window.Maximize()
+}
+
 // Present the current frame.
 func (r *Renderer) Present() error {
 	r.renderer.Present()

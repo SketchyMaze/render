@@ -35,7 +35,7 @@ func (r *Renderer) Poll() (*event.State, error) {
 		case *sdl.WindowEvent:
 			if DebugWindowEvents {
 				if t.Event == sdl.WINDOWEVENT_RESIZED {
-					fmt.Printf("[%d ms] tick:%d Window Resized to %dx%d",
+					fmt.Printf("[%d ms] tick:%d Window Resized to %dx%d\n",
 						t.Timestamp,
 						r.ticks,
 						t.Data1,
@@ -49,7 +49,7 @@ func (r *Renderer) Poll() (*event.State, error) {
 			}
 		case *sdl.MouseMotionEvent:
 			if DebugMouseEvents {
-				fmt.Printf("[%d ms] tick:%d MouseMotion  type:%d  id:%d  x:%d  y:%d  xrel:%d  yrel:%d",
+				fmt.Printf("[%d ms] tick:%d MouseMotion  type:%d  id:%d  x:%d  y:%d  xrel:%d  yrel:%d\n",
 					t.Timestamp, r.ticks, t.Type, t.Which, t.X, t.Y, t.XRel, t.YRel,
 				)
 			}
@@ -101,7 +101,7 @@ func (r *Renderer) Poll() (*event.State, error) {
 			// }
 		case *sdl.MouseWheelEvent:
 			if DebugMouseEvents {
-				fmt.Printf("[%d ms] tick:%d MouseWheel  type:%d  id:%d  x:%d  y:%d",
+				fmt.Printf("[%d ms] tick:%d MouseWheel  type:%d  id:%d  x:%d  y:%d\n",
 					t.Timestamp, r.ticks, t.Type, t.Which, t.X, t.Y,
 				)
 			}
