@@ -166,12 +166,14 @@ func (r *Renderer) Poll() (*event.State, error) {
 				s.Ctrl = t.State == 1
 			case sdl.SCANCODE_RCTRL:
 				s.Ctrl = t.State == 1
+			case sdl.SCANCODE_SPACE:
+				s.Space = t.State == 1
 			case sdl.SCANCODE_BACKSPACE:
 				// Make it a key event with "\b" as the sequence.
 				s.SetKeyDown(`\b`, t.State == 1 || t.Repeat == 1)
 			default:
 				// Push the string value of the key.
-				s.SetKeyDown(string(t.Keysym.Sym), t.State == 1)
+				s.SetKeyDown(string(t.Keysym.Sym), t.State == 1 || t.Repeat == 1)
 			}
 		}
 	}

@@ -11,6 +11,7 @@ type State struct {
 
 	// Special keys
 	Escape bool
+	Space  bool
 	Enter  bool
 	Shift  bool
 	Ctrl   bool
