@@ -49,6 +49,7 @@ type Engine interface {
 // abstracting away its inner workings.
 type Texturer interface {
 	Size() Rect
+	Image() image.Image
 }
 
 // Rect has a coordinate and a width and height.

@@ -24,6 +24,7 @@ func (r *Renderer) Copy(t render.Texturer, src, dst render.Rect) {
 // Texture can hold on to SDL textures for caching and optimization.
 type Texture struct {
 	tex    *sdl.Texture
+	image  image.Image
 	width  int32
 	height int32
 }
@@ -64,6 +65,7 @@ func (r *Renderer) StoreTexture(name string, img image.Image) (render.Texturer, 
 		width:  surface.W,
 		height: surface.H,
 		tex:    texture,
+		image:  img,
 	}
 	r.textures[name] = tex
 
@@ -73,6 +75,11 @@ func (r *Renderer) StoreTexture(name string, img image.Image) (render.Texturer, 
 // Size returns the dimensions of the texture.
 func (t *Texture) Size() render.Rect {
 	return render.NewRect(int(t.width), int(t.height))
+}
+
+// Image returns the underlying Go image.Image.
+func (t *Texture) Image() image.Image {
+	return t.image
 }
 
 // LoadTexture initializes a texture from a bitmap image.

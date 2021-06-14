@@ -74,6 +74,11 @@ func (t *Texture) Size() render.Rect {
 	return render.NewRect(t.width, t.height)
 }
 
+// Image returns the underlying image.
+func (t *Texture) Image() image.Image {
+	return nil
+}
+
 // LoadTexture recalls a cached texture image.
 func (e *Engine) LoadTexture(name string) (render.Texturer, error) {
 	if tex, ok := e.textures[name]; ok {
