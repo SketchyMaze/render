@@ -19,6 +19,30 @@ var (
 	reHexColor8 = regexp.MustCompile(`^([A-Fa-f0-9]{2})([A-Fa-f0-9]{2})([A-Fa-f0-9]{2})([A-Fa-f0-9]{2})$`)
 )
 
+// Common color names.
+var (
+	Invisible  = Color{}
+	White      = RGBA(255, 255, 255, 255)
+	Grey       = RGBA(153, 153, 153, 255)
+	DarkGrey   = RGBA(64, 64, 64, 255)
+	Black      = RGBA(0, 0, 0, 255)
+	SkyBlue    = RGBA(0, 153, 255, 255)
+	Blue       = RGBA(0, 0, 255, 255)
+	DarkBlue   = RGBA(0, 0, 153, 255)
+	Red        = RGBA(255, 0, 0, 255)
+	DarkRed    = RGBA(153, 0, 0, 255)
+	Green      = RGBA(0, 255, 0, 255)
+	DarkGreen  = RGBA(0, 153, 0, 255)
+	Cyan       = RGBA(0, 255, 255, 255)
+	DarkCyan   = RGBA(0, 153, 153, 255)
+	Yellow     = RGBA(255, 255, 0, 255)
+	Orange     = RGBA(255, 153, 0, 255)
+	DarkYellow = RGBA(153, 153, 0, 255)
+	Magenta    = RGBA(255, 0, 255, 255)
+	Purple     = RGBA(153, 0, 153, 255)
+	Pink       = RGBA(255, 153, 255, 255)
+)
+
 // Color holds an RGBA color value.
 type Color struct {
 	Red   uint8

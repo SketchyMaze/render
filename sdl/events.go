@@ -11,6 +11,7 @@ import (
 // Debug certain SDL events
 var (
 	DebugWindowEvents = false
+	DebugTouchEvents  = false
 	DebugMouseEvents  = false
 	DebugClickEvents  = false
 	DebugKeyEvents    = false
@@ -22,6 +23,7 @@ func (r *Renderer) Poll() (*event.State, error) {
 
 	// Reset some events.
 	s.WindowResized = false
+	// s.Touching = false
 
 	// helper function to push keyboard key names on keyDown events only.
 	pushKey := func(name string, state uint8) {
@@ -105,6 +107,18 @@ func (r *Renderer) Poll() (*event.State, error) {
 					t.Timestamp, r.ticks, t.Type, t.Which, t.X, t.Y,
 				)
 			}
+		case *sdl.MultiGestureEvent:
+			if DebugTouchEvents {
+				fmt.Printf("[%d ms] tick:%d MultiGesture  type:%d  Num=%d  TouchID=%+v  Dt=%f  Dd=%f  XY=%f,%f\n",
+					t.Timestamp, r.ticks, t.Type, t.NumFingers, t.TouchID, t.DTheta, t.DDist, t.X, t.Y,
+				)
+			}
+			s.Touching = true
+			s.TouchNumFingers = int(t.NumFingers)
+			s.TouchCenterX = int(t.X)
+			s.TouchCenterY = int(t.Y)
+			s.GesturePinched = float64(t.DDist)
+			s.GestureRotated = float64(t.DTheta)
 		case *sdl.KeyboardEvent:
 			if DebugKeyEvents {
 				fmt.Printf("[%d ms] tick:%d Keyboard  type:%d  sym:%c  modifiers:%d  state:%d  repeat:%d\n",

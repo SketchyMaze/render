@@ -1,6 +1,8 @@
 package event
 
-import "strings"
+import (
+	"strings"
+)
 
 // State holds the current state of key/mouse events.
 type State struct {
@@ -30,6 +32,14 @@ type State struct {
 
 	// Window resized
 	WindowResized bool
+
+	// Touch state
+	Touching        bool
+	TouchNumFingers int
+	TouchCenterX    int
+	TouchCenterY    int
+	GestureRotated  float64
+	GesturePinched  float64
 }
 
 // NewState creates a new event.State.

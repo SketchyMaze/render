@@ -135,6 +135,24 @@ for pt := range render.IterLine(A, B) {
 * IterEllipse(A Point, B Point): draw an elipse fitting inside the
   rectangle bounded by points A and B.
 
+## Multitouch Gesture Notes
+
+Support for SDL2's MultiGestureEvent is added on October 6 2021.
+The event.State will have the property `Touching=true` while the engine
+believes multitouch gestures are afoot. This begins when the user touches
+the screen with two fingers, and _then_ motion is detected.
+
+SDL2 spams us with gesture events for each tiny change detected, and then
+just stops. The SDL driver in this repo doesn't set ev.State.Touching=false.
+One heuristic you may use in your program to detect when multitouch has
+ended is this:
+
+SDL2 always emulates the mouse Button1 click for one of the fingers.
+Record the position at the first Touching=true event, and monitor for
+delta changes in position as the "mouse cursor" moves. When delta
+movements become stale and don't update, you can set State.Touching=false
+in your program.
+
 ## License
 
 MIT.
