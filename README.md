@@ -10,7 +10,7 @@ the web browser.
 
 ![Screenshot](examples/hello-world/screenshot.png)
 
-**Notice:** [github.com/kirsle/render](https://github.com/kirsle/render) is a
+**Notice:** [github.com/SketchyMaze/render](https://github.com/SketchyMaze/render) is a
 mirror to the upstream repository at [git.kirsle.net/go/render](https://git.kirsle.net/go/render).
 Issues and pull requests will be accepted at GitHub.
 
