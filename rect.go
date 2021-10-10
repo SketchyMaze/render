@@ -51,6 +51,7 @@ func (r Rect) Intersects(other Rect) bool {
 			NewPoint(b.X, b.Y+b.H),
 			NewPoint(b.X+b.W, b.Y),
 			NewPoint(b.X+b.W, b.Y+b.H),
+			NewPoint(b.X+b.W/2, b.Y+b.H/2), // midpoint
 		}
 		for _, pt := range corners {
 			if pt.Inside(a) {
