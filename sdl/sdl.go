@@ -2,13 +2,16 @@
 package sdl
 
 import (
+	"bytes"
 	"fmt"
+	"image"
 	"time"
 
 	"git.kirsle.net/go/render"
 	"git.kirsle.net/go/render/event"
 	"github.com/veandco/go-sdl2/sdl"
 	"github.com/veandco/go-sdl2/ttf"
+	"golang.org/x/image/bmp"
 )
 
 // Renderer manages the SDL state.
@@ -82,6 +85,37 @@ func (r *Renderer) Setup() error {
 	}
 	renderer.SetDrawBlendMode(sdl.BLENDMODE_BLEND)
 	r.renderer = renderer
+
+	return nil
+}
+
+// SetWindowIcon sets an icon for the SDL2 window.
+func (r *Renderer) SetWindowIcon(icon image.Image) error {
+	var (
+		fh = bytes.NewBuffer([]byte{}) // bitmap icon buffer
+	)
+
+	// Encode icon image to bitmap
+	err := bmp.Encode(fh, icon)
+	if err != nil {
+		return err
+	}
+
+	// Create an SDL2 RWOps from the bitmap data in memory.
+	rw, err := sdl.RWFromMem(fh.Bytes())
+	if err != nil {
+		return err
+	}
+
+	// Surface from RWOps
+	surface, err := sdl.LoadBMPRW(rw, true)
+	if err != nil {
+		return err
+	}
+	defer surface.Free()
+
+	// Set the app window icon.
+	r.window.SetIcon(surface)
 
 	return nil
 }
