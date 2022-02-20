@@ -52,6 +52,8 @@ func LoadFont(filename string, size int) (*ttf.Font, error) {
 		err  error
 	)
 
+	fontsMu.Lock()
+	defer fontsMu.Unlock()
 	if binary, ok := installedFont[filename]; ok {
 		var RWops *sdl.RWops
 		RWops, err = sdl.RWFromMem(binary)

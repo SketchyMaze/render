@@ -5,7 +5,6 @@ import (
 	"bytes"
 	"fmt"
 	"image"
-	"time"
 
 	"git.kirsle.net/go/render"
 	"git.kirsle.net/go/render/event"
@@ -17,17 +16,14 @@ import (
 // Renderer manages the SDL state.
 type Renderer struct {
 	// Configurable fields.
-	title     string
-	width     int32
-	height    int32
-	startTime time.Time
+	title  string
+	width  int32
+	height int32
 
 	// Private fields.
 	events   *event.State
 	window   *sdl.Window
 	renderer *sdl.Renderer
-	running  bool
-	ticks    uint64
 	textures map[string]*Texture // cached textures
 
 	// Optimizations to minimize SDL calls.

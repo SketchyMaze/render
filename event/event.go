@@ -40,12 +40,18 @@ type State struct {
 	TouchCenterY    int
 	GestureRotated  float64
 	GesturePinched  float64
+
+	// Game controller events.
+	// NOTE: for SDL2 you will need to call GameControllerEventState(1)
+	// from veandco/go-sdl2/sdl for events to be read by SDL2.
+	Controllers map[int]GameController
 }
 
 // NewState creates a new event.State.
 func NewState() *State {
 	return &State{
-		keydown: map[string]interface{}{},
+		keydown:     map[string]interface{}{},
+		Controllers: map[int]GameController{},
 	}
 }
 
@@ -117,4 +123,31 @@ var shiftMap = map[string]string{
 	",": "<",
 	".": ">",
 	"/": "?",
+}
+
+// AddController adds a new controller to the event state. This is typically called
+// automatically by the render engine, e.g. on an SDL ControllerDeviceEvent.
+func (s *State) AddController(index int, v GameController) bool {
+	if _, ok := s.Controllers[index]; ok {
+		return false
+	}
+	s.Controllers[index] = v
+	return true
+}
+
+// RemoveController removes the available controller.
+func (s *State) RemoveController(index int) bool {
+	if _, ok := s.Controllers[index]; ok {
+		delete(s.Controllers, index)
+		return true
+	}
+	return false
+}
+
+// GetController gets a registered controller by index.
+func (s *State) GetController(index int) (GameController, bool) {
+	if c, ok := s.Controllers[index]; ok {
+		return c, true
+	}
+	return nil, false
 }

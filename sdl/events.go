@@ -10,11 +10,12 @@ import (
 
 // Debug certain SDL events
 var (
-	DebugWindowEvents = false
-	DebugTouchEvents  = false
-	DebugMouseEvents  = false
-	DebugClickEvents  = false
-	DebugKeyEvents    = false
+	DebugWindowEvents     = false
+	DebugTouchEvents      = false
+	DebugMouseEvents      = false
+	DebugClickEvents      = false
+	DebugKeyEvents        = false
+	DebugControllerEvents = false
 )
 
 // Poll for events.
@@ -39,7 +40,7 @@ func (r *Renderer) Poll() (*event.State, error) {
 				if t.Event == sdl.WINDOWEVENT_RESIZED {
 					fmt.Printf("[%d ms] tick:%d Window Resized to %dx%d\n",
 						t.Timestamp,
-						r.ticks,
+						sdl.GetTicks(),
 						t.Data1,
 						t.Data2,
 					)
@@ -52,7 +53,7 @@ func (r *Renderer) Poll() (*event.State, error) {
 		case *sdl.MouseMotionEvent:
 			if DebugMouseEvents {
 				fmt.Printf("[%d ms] tick:%d MouseMotion  type:%d  id:%d  x:%d  y:%d  xrel:%d  yrel:%d\n",
-					t.Timestamp, r.ticks, t.Type, t.Which, t.X, t.Y, t.XRel, t.YRel,
+					t.Timestamp, sdl.GetTicks(), t.Type, t.Which, t.X, t.Y, t.XRel, t.YRel,
 				)
 			}
 
@@ -62,7 +63,7 @@ func (r *Renderer) Poll() (*event.State, error) {
 		case *sdl.MouseButtonEvent:
 			if DebugClickEvents {
 				fmt.Printf("[%d ms] tick:%d MouseButton  type:%d  id:%d  x:%d  y:%d  button:%d  state:%d\n",
-					t.Timestamp, r.ticks, t.Type, t.Which, t.X, t.Y, t.Button, t.State,
+					t.Timestamp, sdl.GetTicks(), t.Type, t.Which, t.X, t.Y, t.Button, t.State,
 				)
 			}
 
@@ -104,13 +105,13 @@ func (r *Renderer) Poll() (*event.State, error) {
 		case *sdl.MouseWheelEvent:
 			if DebugMouseEvents {
 				fmt.Printf("[%d ms] tick:%d MouseWheel  type:%d  id:%d  x:%d  y:%d\n",
-					t.Timestamp, r.ticks, t.Type, t.Which, t.X, t.Y,
+					t.Timestamp, sdl.GetTicks(), t.Type, t.Which, t.X, t.Y,
 				)
 			}
 		case *sdl.MultiGestureEvent:
 			if DebugTouchEvents {
 				fmt.Printf("[%d ms] tick:%d MultiGesture  type:%d  Num=%d  TouchID=%+v  Dt=%f  Dd=%f  XY=%f,%f\n",
-					t.Timestamp, r.ticks, t.Type, t.NumFingers, t.TouchID, t.DTheta, t.DDist, t.X, t.Y,
+					t.Timestamp, sdl.GetTicks(), t.Type, t.NumFingers, t.TouchID, t.DTheta, t.DDist, t.X, t.Y,
 				)
 			}
 			s.Touching = true
@@ -122,7 +123,7 @@ func (r *Renderer) Poll() (*event.State, error) {
 		case *sdl.KeyboardEvent:
 			if DebugKeyEvents {
 				fmt.Printf("[%d ms] tick:%d Keyboard  type:%d  sym:%c  modifiers:%d  state:%d  repeat:%d\n",
-					t.Timestamp, r.ticks, t.Type, t.Keysym.Sym, t.Keysym.Mod, t.State, t.Repeat,
+					t.Timestamp, sdl.GetTicks(), t.Type, t.Keysym.Sym, t.Keysym.Mod, t.State, t.Repeat,
 				)
 			}
 
@@ -189,6 +190,80 @@ func (r *Renderer) Poll() (*event.State, error) {
 			default:
 				// Push the string value of the key.
 				s.SetKeyDown(string(t.Keysym.Sym), t.State == 1 || t.Repeat == 1)
+			}
+		case *sdl.ControllerDeviceEvent:
+			if DebugControllerEvents {
+				fmt.Printf("[%d ms] tick:%d ControllerDevice  type:%d  timestamp:%d  which:%d\n",
+					t.Timestamp, sdl.GetTicks(), t.Type, t.Timestamp, t.Which,
+				)
+			}
+
+			var index = int(t.Which)
+
+			// Update the catalog of available controllers.
+			switch t.Type {
+			case sdl.CONTROLLERDEVICEADDED:
+				if DebugControllerEvents {
+					fmt.Printf("[%d ms] tick:%d AddController: %s\n",
+						t.Timestamp, sdl.GetTicks(), sdl.GameControllerNameForIndex(index),
+					)
+				}
+
+				// Add and open the GameController.
+				var (
+					name     = sdl.GameControllerNameForIndex(index)
+					ctrlImpl = sdl.GameControllerOpen(index)
+					ctrl     = NewGameController(index, name, ctrlImpl)
+				)
+				s.AddController(index, ctrl)
+			case sdl.CONTROLLERDEVICEREMOVED:
+				if DebugControllerEvents {
+					fmt.Printf("[%d ms] tick:%d RemoveController: %s\n",
+						t.Timestamp, sdl.GetTicks(), sdl.GameControllerNameForIndex(index),
+					)
+				}
+				s.RemoveController(index)
+			}
+		case *sdl.ControllerButtonEvent:
+			if DebugControllerEvents {
+				fmt.Printf("[%d ms] tick:%d ControllerButton  type:%d  timestamp:%d  which:%d  btn:%d  state:%d\n",
+					t.Timestamp, sdl.GetTicks(), t.Type, t.Timestamp, t.Which, t.Button, t.State,
+				)
+			}
+
+			var (
+				index      = int(t.Which)
+				buttonName = sdl.GameControllerGetStringForButton(sdl.GameControllerButton(t.Button))
+			)
+			if DebugControllerEvents {
+				fmt.Printf("[%d ms] tick:%d ControllerButton: index:%d name:%s pressed:%d\n",
+					t.Timestamp, sdl.GetTicks(), index, buttonName, t.State,
+				)
+			}
+
+			if ctrl, ok := s.GetController(index); ok {
+				ctrl.SetButtonState(buttonName, t.State == sdl.PRESSED)
+			}
+		case *sdl.ControllerAxisEvent:
+			if DebugControllerEvents {
+				fmt.Printf("[%d ms] tick:%d ControllerAxis  type:%d  timestamp:%d  which:%d  axis:%d  value:%d\n",
+					t.Timestamp, sdl.GetTicks(), t.Type, t.Timestamp, t.Which, t.Axis, t.Value,
+				)
+			}
+
+			var (
+				index    = int(t.Which)
+				axisName = sdl.GameControllerGetStringForAxis(sdl.GameControllerAxis(t.Axis))
+				value    = int(t.Value)
+			)
+			if DebugControllerEvents {
+				fmt.Printf("[%d ms] tick:%d ControllerAxis: index:%d name:%s value:%d\n",
+					t.Timestamp, sdl.GetTicks(), index, axisName, value,
+				)
+			}
+
+			if ctrl, ok := s.GetController(index); ok {
+				ctrl.SetAxisState(axisName, value)
 			}
 		}
 	}
