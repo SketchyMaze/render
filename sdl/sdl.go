@@ -153,3 +153,8 @@ func (r *Renderer) Delay(time uint32) {
 func (r *Renderer) Loop() error {
 	return nil
 }
+
+// Private access methods
+func (r *Renderer) GetSDL2Renderer() *sdl.Renderer {
+	return r.renderer
+}
