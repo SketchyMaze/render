@@ -34,6 +34,10 @@ type Engine interface {
 	LoadTexture(name string) (Texturer, error)
 	Copy(t Texturer, src, dst Rect)
 
+	// Teardown and free memory for all textures, returning the number
+	// of textures that were freed.
+	FreeTextures() int
+
 	// Delay for a moment using the render engine's delay method,
 	// implemented by sdl.Delay(uint32)
 	Delay(uint32)
@@ -49,4 +53,5 @@ type Engine interface {
 type Texturer interface {
 	Size() Rect
 	Image() image.Image
+	Free() error // teardown and free memory
 }

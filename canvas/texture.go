@@ -79,6 +79,11 @@ func (t *Texture) Image() image.Image {
 	return nil
 }
 
+// Free the texture. Doesn't do anything in the Canvas engine currently.
+func (t *Texture) Free() error {
+	return nil
+}
+
 // LoadTexture recalls a cached texture image.
 func (e *Engine) LoadTexture(name string) (render.Texturer, error) {
 	if tex, ok := e.textures[name]; ok {
@@ -94,5 +99,13 @@ func (e *Engine) Copy(t render.Texturer, src, dist render.Rect) {
 
 	// e.canvas.ctx2d.Call("drawImage", tex.image, dist.X, dist.Y)
 	e.canvas.ctx2d.Call("drawImage", tex.canvas, dist.X, dist.Y)
+}
 
+// FreeTextures flushes the texture cache.
+func (e *Engine) FreeTextures() int {
+	var len = len(e.textures)
+	for name := range e.textures {
+		delete(e.textures, name)
+	}
+	return len
 }
