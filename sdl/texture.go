@@ -69,30 +69,28 @@ func (r *Renderer) StoreTexture(name string, img image.Image) (render.Texturer, 
 		tex:    texture,
 		image:  img,
 	}
+
+	r.textureMu.Lock()
 	r.textures[name] = tex
+	r.textureMu.Unlock()
 
 	return tex, nil
 }
 
 // CountTextures is a custom function for the SDL2 Engine only that returns the
 // size of the engine texture cache.
-//
-// Returns the number of (Go) Texture objects (which hold cached image.Image
-// and can garbage collect nicely) and the number of those which also have
-// SDL2 Texture objects (which need to be freed manually).
-func (r *Renderer) CountTextures() (bitmaps int, sdl2textures int) {
-	var withTex int // ones with active SDL2 Texture objects
-	for _, tex := range r.textures {
-		if tex.tex != nil {
-			withTex++
-		}
-	}
+func (r *Renderer) CountTextures() int {
+	r.textureMu.RLock()
+	defer r.textureMu.RUnlock()
 
-	return len(r.textures), withTex
+	return len(r.textures)
 }
 
 // ListTextures is a custom function to peek into the SDL2 texture cache names.
 func (r *Renderer) ListTextures() []string {
+	r.textureMu.RLock()
+	defer r.textureMu.RUnlock()
+
 	var keys = []string{}
 	for key := range r.textures {
 		keys = append(keys, key)
@@ -112,6 +110,9 @@ func (t *Texture) Image() image.Image {
 
 // Free the SDL2 texture object.
 func (t *Texture) Free() error {
+	t.render.textureMu.Lock()
+	defer t.render.textureMu.Unlock()
+
 	var err error
 
 	if t.tex != nil {
@@ -132,6 +133,9 @@ func (t *Texture) Free() error {
 
 // LoadTexture initializes a texture from a bitmap image.
 func (r *Renderer) LoadTexture(name string) (render.Texturer, error) {
+	r.textureMu.RLock()
+	defer r.textureMu.RUnlock()
+
 	if tex, ok := r.textures[name]; ok {
 		// If the SDL2 texture had been freed, recreate it.
 		if tex.tex == nil {
@@ -144,6 +148,9 @@ func (r *Renderer) LoadTexture(name string) (render.Texturer, error) {
 
 // FreeTextures flushes the internal cache of SDL2 textures and frees their memory.
 func (r *Renderer) FreeTextures() int {
+	r.textureMu.Lock()
+	defer r.textureMu.Unlock()
+
 	var num = len(r.textures)
 	for name, tex := range r.textures {
 		delete(r.textures, name)

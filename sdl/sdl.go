@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"fmt"
 	"image"
+	"sync"
 
 	"git.kirsle.net/go/render"
 	"git.kirsle.net/go/render/event"
@@ -21,10 +22,11 @@ type Renderer struct {
 	height int32
 
 	// Private fields.
-	events   *event.State
-	window   *sdl.Window
-	renderer *sdl.Renderer
-	textures map[string]*Texture // cached textures
+	events    *event.State
+	window    *sdl.Window
+	renderer  *sdl.Renderer
+	textures  map[string]*Texture // cached textures
+	textureMu sync.RWMutex
 
 	// Optimizations to minimize SDL calls.
 	lastColor render.Color
