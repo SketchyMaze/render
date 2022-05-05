@@ -118,6 +118,15 @@ func (r *Renderer) SetWindowIcon(icon image.Image) error {
 	return nil
 }
 
+// ShowCursor sets whether the mouse cursor should be visible.
+func (r *Renderer) ShowCursor(v bool) {
+	if v {
+		sdl.ShowCursor(sdl.ENABLE)
+	} else {
+		sdl.ShowCursor(sdl.DISABLE)
+	}
+}
+
 // SetTitle sets the SDL window title.
 func (r *Renderer) SetTitle(title string) {
 	r.title = title
